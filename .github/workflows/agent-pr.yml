@@ -1,0 +1,105 @@
+name: Agent PR pipeline (product)
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  # ─────────────────────────────────────────────────────────────
+  # PRE-FLIGHT: classifica risco do PR pelos paths tocados
+  # ─────────────────────────────────────────────────────────────
+  preflight:
+    name: Pre-flight checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Classify changed paths
+        run: |
+          BASE="${{ github.event.pull_request.base.sha || 'HEAD~1' }}"
+          CHANGED=$(git diff --name-only "$BASE...HEAD" || true)
+          echo "## Files in this PR" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "$CHANGED" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          if echo "$CHANGED" | grep -qE '^(CLAUDE.md|config/harness/|.github/)'; then
+            echo "::notice::Critical paths touched — human review required"
+          fi
+
+  # ─────────────────────────────────────────────────────────────
+  # MARKDOWN LINT: gates do "código" deste repo (docs)
+  # ─────────────────────────────────────────────────────────────
+  markdown-lint:
+    name: Markdown lint
+    runs-on: ubuntu-latest
+    needs: preflight
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run markdownlint
+        run: |
+          npx --yes markdownlint-cli2 \
+            "**/*.md" \
+            "#node_modules" "#.harness" \
+            || (echo "::error::Markdown lint failures — see output above" && exit 1)
+
+  # ─────────────────────────────────────────────────────────────
+  # AI REVIEW (Claude Code Action — feedback em PT)
+  # ─────────────────────────────────────────────────────────────
+  ai-review:
+    name: AI review
+    runs-on: ubuntu-latest
+    needs: preflight
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Check credentials
+        id: creds
+        env:
+          OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          if [ -z "$OAUTH_TOKEN" ]; then
+            echo "::notice::No CLAUDE_CODE_OAUTH_TOKEN configured — skipping AI review"
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.creds.outputs.enabled == 'true'
+        with:
+          fetch-depth: 1
+
+      - uses: anthropics/claude-code-action@v1
+        if: steps.creds.outputs.enabled == 'true'
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          allowed_bots: "*"
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Review this product pull request as a senior PM. Apply the
+            product-review-rubric skill: coherence with scope/roadmap/PDDs,
+            quality of the PRD (win condition, scope honesty, testable stories),
+            sprint quality (one goal, honest capacity), roadmap discipline (no
+            firm dates on next/later), and ticket quality (Given/When/Then,
+            PRD link, risk).
+
+            The PR branch is already checked out. Use `gh pr comment` for the
+            summary and `mcp__github_inline_comment__create_inline_comment` (with
+            `confirmed: true`) for line-specific issues. Comment only on GitHub.
+
+            Write the summary and all review comments in Portuguese (pt-PT). Keep
+            file paths and identifiers as-is.
+
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"

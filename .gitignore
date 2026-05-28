@@ -1,0 +1,20 @@
+# ─── Sistema ──────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# ─── Ambiente ─────────────────────────────────────────
+.env
+.env.local
+
+# ─── Harness (estado de runtime local — não versionar) ───
+.harness/state/
+.harness/traces/
+.harness/runs/
+.harness/cache/
+
+# ─── Python (qualquer scripting que venhamos a ter) ──
+__pycache__/
+*.pyc
+.venv/

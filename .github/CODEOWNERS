@@ -1,0 +1,17 @@
+# CODEOWNERS — revisão humana obrigatória nos PRs deste repo de produto.
+#
+# Funciona com a branch protection ("Require review from Code Owners"):
+# qualquer PR a tocar nestes paths precisa da aprovação do owner.
+#
+# TEMPLATE: substitui @araodomingosjoao pelo teu utilizador/equipa.
+
+# Rede de segurança: tudo o que o agente produz é revisto por um humano.
+*                            @araodomingosjoao
+
+# Paths críticos — explicitar documenta o modelo de risco.
+/.github/                    @araodomingosjoao
+/config/harness/             @araodomingosjoao
+/CLAUDE.md                   @araodomingosjoao
+/docs/scope.md               @araodomingosjoao
+/docs/roadmap.md             @araodomingosjoao
+/docs/pdds/                  @araodomingosjoao

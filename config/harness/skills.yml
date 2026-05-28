@@ -1,0 +1,26 @@
+# Allow-list e política de skills (.claude/skills/).
+#
+# Skills internas (NOSSAS) são fonte de verdade, alinhadas ao CLAUDE.md.
+# Skills externas são supply-chain — só entram se vetadas, revistas e fixadas.
+
+policy:
+  trusted_sources:
+    - "skills.sh"              # passa por 3 auditorias de segurança independentes
+    - "github.com/anthropics"  # first-party (Anthropic) — risco supply-chain ~nulo
+  review_required: true
+  # Como adicionar uma externa:
+  #   1. revê o SKILL.md à mão (sem instruções de exfiltração / override de regras / tools inesperadas)
+  #   2. vendora no repo (`.claude/skills/<nome>/`) ou aponta para a fonte fixada
+  #   3. lista-a em `external` abaixo, com fonte + commit/version + licença
+
+# Skills nossas — mantidas neste repo.
+internal:
+  - writing-prds            # formato e padrões de PRD
+  - user-story-writing      # As X / I want / So that + Given/When/Then
+  - sprint-planning         # um objetivo, capacidade honesta, DoD
+  - roadmap-thinking        # now / next / later, trade-offs
+  - discovery-methods       # entrevistas, JTBD, hipóteses testáveis
+  - product-review-rubric   # rubrica de review (coerência, escopo, métricas)
+
+# Skills externas aprovadas (vazio até serem revistas + fixadas).
+external: []

@@ -1,0 +1,52 @@
+# Política do harness para o template de produto.
+# Define budgets, kill switch e classificação de risco por path.
+
+enabled: true   # kill switch global; false trava qualquer execução do agente
+
+# Budgets por task do agente (limites duros — excedeu, pára).
+budgets:
+  max_tokens_per_task: 150000
+  max_tool_calls_per_task: 80
+  max_duration_seconds: 1800   # 30 min
+  max_cost_usd: 5.00           # por task; ajusta conforme orçamento
+
+# Rate limits (PRs criados pelo agente).
+rate_limits:
+  max_prs_per_hour: 4
+  max_prs_per_day: 20
+
+# Classificação de risco por path — usada pelo CI e por humanos a decidir
+# severidade. Para artefactos de produto, o que move a visão é mais crítico
+# do que o que move um sprint.
+risk_classification:
+  critical:
+    paths:
+      - "CLAUDE.md"
+      - "config/harness/**"
+      - ".github/workflows/**"
+      - "docs/scope.md"
+      - "docs/pdds/**"
+  high:
+    paths:
+      - "docs/prds/**"
+      - "docs/roadmap.md"
+      - ".github/CODEOWNERS"
+  medium:
+    paths:
+      - "sprints/**"
+      - ".github/ISSUE_TEMPLATE/**"
+  low:
+    paths:
+      - "docs/discovery/**"
+      - "*.md"
+
+# Operações que exigem aprovação humana sempre.
+requires_human_approval:
+  - "create or modify a PDD"
+  - "modify CLAUDE.md or scope.md"
+  - "change branch protection or CODEOWNERS"
+
+# Caminhos read-only para o agente (tudo o resto pode tocar, com review).
+read_only_paths:
+  - "LICENSE"
+  - ".harness/**"

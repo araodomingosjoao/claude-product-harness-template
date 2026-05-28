@@ -1,0 +1,42 @@
+name: Claude agent (product)
+
+# Implementação conduzida pelo agente. Menciona @claude num issue ou comentário
+# de PR (ex.: "@claude escreve um PRD para notificações por email") e o agente
+# segue o pipeline de produto numa branch e abre/atualiza o PR. Os gates +
+# ai-review (agent-pr.yml) validam-no depois. Corre na subscrição
+# (CLAUDE_CODE_OAUTH_TOKEN).
+#
+# Pedido vago ou de escopo grande? O agente usa primeiro o sub-agente spec-writer:
+# publica uma spec e, se ficarem perguntas em aberto que não resolve pelo
+# CLAUDE.md/scope.md/roadmap/PRDs, pára sem implementar até o humano responder.
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened]
+
+jobs:
+  claude:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'issues' && contains(github.event.issue.body, '@claude'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          track_progress: true
+          claude_args: '--append-system-prompt "For non-trivial tasks, follow the product agent pipeline in CLAUDE.md: spec-writer for vague or large requests, then discovery-researcher (if there is discovery material), then prd-author, then product-reviewer; in parallel sprint-planner and ticket-writer when planning a sprint. Subagents cannot call other subagents, so you orchestrate the chain. If the request is vague or large and open questions remain that you cannot resolve from CLAUDE.md, scope.md, roadmap.md, the PDDs or existing PRDs, post the spec with an Open questions section and STOP without writing the PRD or tickets until a human answers. Never invent product decisions. Clear, small tasks (a tweak to an existing PRD, a small note in discovery) go straight to implementation. Keep changes minimal and within CLAUDE.md conventions. Write everything you post on the PR or issue for a human to read (the PR description, the PRD draft, the spec, any open questions) in Portuguese (pt-PT); keep file paths, commands and commit messages in English."'
