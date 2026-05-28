@@ -1,0 +1,32 @@
+// Config do markdownlint — postura "soft" para repo de artefactos de produto em PT-PT.
+// Aqui o markdown é prose (PRDs, decisões, sprints), não documentação técnica
+// estrita. Mantemos só as regras que apanham bugs reais de render; o resto
+// (whitespace, line-length, code-block-lang) fica como recomendação, não gate.
+{
+  "config": {
+    "default": true,
+
+    // — Cosméticas, irrelevantes para prose em PT —
+    "MD013": false,   // line-length: palavras em PT são longas
+    "MD036": false,   // emphasis-as-heading: usado para legendas
+    "MD041": false,   // first-line-h1: ficheiros podem começar com blockquote
+    "MD034": false,   // bare URLs: render é o mesmo
+    "MD060": false,   // table-column-style: pipes sem espaços OK
+
+    // — Estruturais de formatação (whitespace, code-block-lang, trailing newline) —
+    // Em prose, render do GitHub é tolerante; não vale o gate.
+    "MD022": false,   // blanks-around-headings
+    "MD031": false,   // blanks-around-fences
+    "MD032": false,   // blanks-around-lists
+    "MD040": false,   // fenced-code-language
+    "MD047": false,   // single-trailing-newline
+
+    // — Estilo —
+    "MD004": false,   // ul-style: aceitamos `-` ou `+` (consistência fica ao agente)
+
+    // — Estilo CHANGELOG (Keep a Changelog) —
+    "MD024": { "siblings_only": true }   // `### Adicionado` repete por versão
+  },
+  "globs": ["**/*.md"],
+  "ignores": ["node_modules/**", ".harness/**"]
+}
