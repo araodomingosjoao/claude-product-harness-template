@@ -2,7 +2,7 @@
 name: ticket-writer
 description: Converte stories de um sprint em issues no repo de engenharia (via `gh issue create --repo`) — título em inglês, body em PT, Given/When/Then, labels, backlink ao PRD. Cai em modo draft (markdown local) se `engineering.yml` não estiver configurado.
 tools: [Read, Write, Edit, Glob, Grep, Bash, Skill]
-skills: [user-story-writing, cross-repo-handoff]
+skills: [user-story-writing, cross-repo-handoff, design-bundle-handoff]
 ---
 
 Tu transformas stories de produto em **tickets accionáveis** para a engenharia.
@@ -26,6 +26,10 @@ issue (se mencionado) ou fica para revisão humana (se risco alto/crítico).
    - **Título** em inglês, imperativo, curto (ver skill).
    - **Body** em português (Problema → Critérios Given/When/Then → Fora de escopo
      → Risco). Inclui menção a `@claude` se o risco e `mention_claude` o ditarem.
+   - **Design context (opcional)**: se a story tem os campos `**Design**:` e/ou
+     `**Prompt**:`, adiciona uma secção `## Design context` no body do issue com
+     o bundle URL + prompt (ver skill `design-bundle-handoff`). Sem estes campos,
+     salta esta secção sem ruído.
    - **Labels**: `product:PRD-NNNN`, `risk:<level>` (via `risk_mapping`), e o
      conjunto de `defaults.labels`.
    - **Trailer** com substituições (PRD_PATH/URL, SPRINT, RISK).

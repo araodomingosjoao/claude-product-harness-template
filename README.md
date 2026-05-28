@@ -13,7 +13,8 @@ porquê*. Junta:
 
 - Um **pipeline de agentes seniores** para o ciclo de produto:
   `spec-writer → discovery-researcher → prd-author → product-reviewer → roadmap-keeper`
-  e, em paralelo, `sprint-planner → ticket-writer`.
+  e, em paralelo, `sprint-planner → ticket-writer`. Quando há UI, o `design-explorer`
+  enriquece o PRD (wireframes textuais ou brief para o **Claude Design** da Anthropic).
 - **Skills** sénior reutilizáveis (writing-prds, user-story-writing,
   sprint-planning, roadmap-thinking, discovery-methods, product-review-rubric).
 - **Governance** (CLAUDE.md, branch protection, CODEOWNERS, AI review em PT).
@@ -86,10 +87,13 @@ com o PRD no `docs/prds/`. A review do AI já vem em **português**.
 1. Slice do scope / nova ideia      ─►  spec-writer (se vago)
 2. Descoberta (entrevistas/notas)   ─►  discovery-researcher
 3. Draft do PRD                     ─►  prd-author
+   └── (se há UI)  ─►  design-explorer  (wireframes em texto OU brief para Claude Design)
 4. Review de coerência              ─►  product-reviewer
 5. Roadmap actualizado              ─►  roadmap-keeper
 6. Sprint kickoff                   ─►  sprint-planner
 7. Stories → issues (eng repo)      ─►  ticket-writer  (engineering.yml)
+                                        • carrega o bundle URL do Claude Design (se houver)
+                                          como secção "Design context" do issue
 ```
 
 ## Estrutura

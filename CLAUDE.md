@@ -71,9 +71,9 @@ sub-agentes** — encadeia-os a partir do topo, em sequência:
 spec-writer → discovery-researcher → prd-author → product-reviewer → roadmap-keeper
                                                        │
                                                        ▼
-                              sprint-planner → ticket-writer (Fase 2: gh issue → engineering)
+                              sprint-planner → ticket-writer (gh issue → engineering)
                                                        │
-                            design-explorer (paralelo, Fase 3, quando há UI)
+                            design-explorer (paralelo, quando há UI — texto ou Claude Design)
 ```
 
 - **`spec-writer`** — pedido vago? Clarifica primeiro. Não inventes.
@@ -82,7 +82,8 @@ spec-writer → discovery-researcher → prd-author → product-reviewer → roa
 - **`product-reviewer`** — revê PRD/sprint vs roadmap, princípios, coerência (read-only).
 - **`roadmap-keeper`** — mantém o `docs/roadmap.md`.
 - **`sprint-planner`** — parte itens do roadmap em sprints com objetivo + capacidade.
-- **`ticket-writer`** — converte stories em **issues no repo de engenharia** (Fase 2).
+- **`ticket-writer`** — converte stories em **issues no repo de engenharia** (`gh issue create --repo`).
+- **`design-explorer`** — paralelo: enriquece o PRD com wireframes textuais (`wireframing-in-markdown` + `mermaid-flows`) para UI simples, ou produz um **brief para o Claude Design** quando a UI exige prototipagem rica. O bundle URL resultante vai parar à story e o `ticket-writer` transporta-o para o issue.
 
 Tasks pequenas saltam fases (ex.: nota de descoberta direta, sem PRD).
 

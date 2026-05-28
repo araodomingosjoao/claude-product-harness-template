@@ -5,6 +5,34 @@ Versões deste template (não confundir com o changelog do projecto que o usa).
 O formato segue [Keep a Changelog](https://keepachangelog.com/) e
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-05-28
+
+### Adicionado
+- **Design conversacional — integração com Claude Design (Fase 3)**. O `design-explorer`
+  decide entre dois caminhos:
+  - **Leve** — wireframes textuais (`wireframing-in-markdown`) e user flows
+    (`mermaid-flows`) directamente no PRD; cobre 70% dos casos (forms, listas,
+    detalhe). Os flows renderizam nativamente no GitHub.
+  - **Rico** — produz um **brief para o Claude Design** (`claude-design-brief`)
+    quando a UI exige prototipagem visual (interacção nova, ecrã de produto). O
+    humano cola no Claude Design, itera visualmente, e exporta um *bundle URL*
+    com metadata estruturada (componentes, tokens, layout).
+- **`design-bundle-handoff`** — convenção para registar o bundle URL + prompt na
+  story do sprint. O `ticket-writer` detecta os campos `**Design**:` e `**Prompt**:`
+  e adiciona uma secção `## Design context` ao body do issue do engineering,
+  para o `@claude` lá fetchar o bundle antes de implementar (em vez de adivinhar
+  a UI a partir de texto).
+- **Agente `design-explorer`** e 4 novas skills (`wireframing-in-markdown`,
+  `mermaid-flows`, `claude-design-brief`, `design-bundle-handoff`) na allow-list
+  de `skills.yml`.
+
+### Mudou
+- `ticket-writer` carrega `design-bundle-handoff` e gera a secção `## Design
+  context` quando aplicável (sem ruído quando não aplicável).
+- `cross-repo-handoff` documenta a interacção com a secção `Design context`.
+- `CLAUDE.md` e `README.md` actualizados (design-explorer no pipeline, loop por
+  feature inclui o passo de design).
+
 ## [0.2.0] - 2026-05-28
 
 ### Adicionado
@@ -39,6 +67,7 @@ O formato segue [Keep a Changelog](https://keepachangelog.com/) e
 - **AI review em PT** desde o dia 1 (a conversa do PR é em português; CI/scripts/
   commits em inglês).
 
-### Fases pendentes (próximas releases)
-- **Fase 3**: design conversacional — agente `design-explorer` + skills
-  `wireframing-in-markdown` e flows em Mermaid.
+### Notas
+- Roadmap inicial das 3 fases completo. Próximas melhorias (não planeadas):
+  baseline para os PRDs (estilo eval-set do engineering), markdown lint mais
+  estrito, e MCP server quando o Claude Design o publicar.

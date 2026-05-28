@@ -52,6 +52,13 @@ Vai no fim do body, com link de volta ao PRD:
 🔗 Origem (produto): docs/prds/NNNN-titulo.md · sprint YYYY-Wnn · risco <level>
 ```
 
+### Design context (opcional)
+Se a story tem campos `**Design**:` e/ou `**Prompt**:` (do Claude Design — ver
+skill `design-bundle-handoff`), o `ticket-writer` adiciona ao body uma secção
+`## Design context` com o bundle URL + prompt, **antes** do trailer. O `@claude`
+do engineering vai fetchar o bundle do URL e implementar com a metadata estruturada
+(componentes, tokens, layout) em vez de adivinhar a partir do texto.
+
 ## Mencionar `@claude` no body?
 
 Decide pelo **risco** (configurável em `engineering.yml → mention_claude`):
