@@ -5,6 +5,21 @@ Versões deste template (não confundir com o changelog do projecto que o usa).
 O formato segue [Keep a Changelog](https://keepachangelog.com/) e
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.1] - 2026-05-28
+
+### Adicionado
+- **`scripts/init.sh`** — bootstrap interactivo (no estilo do template de engenharia):
+  pergunta nome, descrição, owner GH, repo de engenharia (opcional) e termos de
+  domínio; substitui placeholders em `CLAUDE.md`, `docs/scope.md`, `CODEOWNERS` e
+  `engineering.yml`; cria `.harness/`; faz commit inicial; auto-destrói opcionalmente.
+- **Seed `docs/prds/0001-archive-projects.md`** — PRD-exemplo completo (problema,
+  win condition, escopo + fora-de-escopo, 3 user stories com Given/When/Then,
+  wireframe textual com 4 estados, user flow em Mermaid, riscos, links). Serve
+  como referência viva do que o sistema produz.
+- **Seed `sprints/2026-W22.md`** — sprint que entrega o PRD-0001, com objetivo
+  mensurável, capacidade declarada, e uma das stories com campos `**Design**:` /
+  `**Prompt**:` (para exemplificar o handoff do Claude Design via `ticket-writer`).
+
 ## [0.3.0] - 2026-05-28
 
 ### Adicionado

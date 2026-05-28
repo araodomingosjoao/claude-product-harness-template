@@ -35,7 +35,18 @@ gh repo clone <user>/meu-produto && cd meu-produto
 
 ### 2. Inicializar
 
-Preenche os placeholders do `CLAUDE.md`, o `docs/scope.md` e o `docs/roadmap.md`.
+```bash
+./scripts/init.sh
+```
+
+Pergunta o essencial (nome, descrição, GH owner, repo de engenharia, termos de
+domínio), substitui placeholders em `CLAUDE.md`, `docs/scope.md`, `CODEOWNERS` e
+`engineering.yml`, e faz o commit inicial. **Não inicializa o `docs/scope.md` por
+ti** — depois do init, preenche-o à mão (é a *north star*).
+
+> Já tens PRD-0001 + sprint exemplo seeded em `docs/prds/0001-archive-projects.md`
+> e `sprints/2026-W22.md` como referência viva do que o sistema produz. Apaga-os
+> quando começares os teus.
 
 ### 3. Configurar o CI
 
@@ -121,11 +132,13 @@ com o PRD no `docs/prds/`. A review do AI já vem em **português**.
 ├── docs/
 │   ├── scope.md               # Visão estável (a north star)
 │   ├── roadmap.md             # now / next / later
-│   ├── prds/                  # Product Requirements Documents
+│   ├── prds/                  # PRDs (inclui 0001-archive-projects.md como seed)
 │   ├── pdds/                  # Product Decision Documents
 │   └── discovery/             # Notas, entrevistas, hipóteses
 │
-└── sprints/                   # Planos de sprint (YYYY-Wnn.md)
+├── sprints/                   # Planos de sprint (inclui 2026-W22.md como seed)
+│
+└── scripts/init.sh            # Bootstrap interactivo (corre uma vez após "Use this template")
 ```
 
 ## Filosofia em uma linha
