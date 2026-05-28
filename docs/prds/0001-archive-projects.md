@@ -2,7 +2,7 @@
 prd: 0001
 status: accepted
 date: 2026-05-28
-owner: @araodomingosjoao
+owner: "@araodomingosjoao"
 ---
 
 # PRD-0001: Arquivar projectos

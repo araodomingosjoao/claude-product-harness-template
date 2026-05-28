@@ -15,7 +15,7 @@ de marketing. É a fonte de verdade para "o que vamos fazer e porquê".
 prd: NNNN
 status: proposed | accepted | shipped | superseded by PRD-XXXX
 date: YYYY-MM-DD
-owner: @utilizador
+owner: "@utilizador"   # aspas obrigatórias — @ é reservado em YAML sem quoting
 ---
 
 # PRD-NNNN: <título>
