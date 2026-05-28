@@ -101,13 +101,24 @@ Tasks pequenas saltam fases (ex.: nota de descoberta direta, sem PRD).
 - Cada sprint tem **um objetivo** mensurável e uma lista realista de stories
   (capacidade declarada). Ao fim, fechas com `## Retro` curta.
 
-## Convenções de tickets (handoff para engenharia)
+## Convenções de tickets — handoff cross-repo (Fase 2)
 
-Tickets que vão para o repo de engenharia (`gh issue create --repo <eng>`):
-- **Título**: imperativo, curto (`Add paginated listing endpoint for projects`).
-- **Body**: problema (1 frase) → critérios de aceitação (Given/When/Then) →
-  link ao PRD → risco estimado → "fora de escopo" claro.
-- **Labels**: `product:<prd-id>`, `risk:<low|medium|high|critical>`.
+O `ticket-writer` cria issues no repo de engenharia via `gh issue create --repo`,
+configurado em `config/harness/engineering.yml`. Sem essa config preenchida, cai
+em modo **draft** (gera markdown local em vez de criar issues — útil offline ou
+antes de o repo de engenharia existir).
+
+A skill `cross-repo-handoff` tem o formato completo. Em resumo:
+
+- **Título**: em **inglês**, imperativo, curto — `Add paginated listing endpoint for projects`.
+- **Body**: em **português** (a conversa do PR é em PT) — Problema (1 frase) →
+  Critérios de aceitação (Given/When/Then) → Fora de escopo → Risco (com justificação).
+- **Labels** (sempre): `product:PRD-NNNN`, `risk:<level>` (via `risk_mapping`), +
+  defaults de `engineering.yml`.
+- **Trailer** (automático): link de volta ao PRD + sprint + risco.
+- **Mencionar @claude no body?** Pelo risco (configurável em
+  `engineering.yml → mention_claude`): `low/medium` → menciona (implementa já);
+  `high/critical` → não menciona (espera revisão humana).
 
 ## Convenções de commits
 

@@ -1,0 +1,39 @@
+# Cross-repo handoff — Fase 2.
+# Aponta o `ticket-writer` ao repo de engenharia onde os issues vão aterrar.
+# Edita `engineering_repo` com o teu repo real, depois commit.
+
+# Obrigatório: OWNER/REPO. Se ficar "OWNER/REPO", o ticket-writer cai em modo
+# `--draft` (gera markdown local) em vez de criar issues.
+engineering_repo: "OWNER/REPO"
+
+# Defaults aplicados a TODOS os issues criados a partir deste repo.
+defaults:
+  # Labels que vão em todos os issues (além de `product:PRD-NNNN` e
+  # `risk:<level>` que o ticket-writer adiciona sempre).
+  labels:
+    - "from-product"
+
+  # Mencionar @claude no body para o agente do engineering implementar
+  # imediatamente?
+  #   auto    — decide pelo risco: low/medium → menciona; high/critical → não
+  #   always  — menciona sempre (agente arranca, gates + review humana validam)
+  #   never   — nunca menciona (humano abre o ticket e dispara à mão)
+  mention_claude: auto
+
+# Trailer adicionado ao fim de cada issue (link de volta ao PRD).
+# Substituições em runtime:
+#   {{PRD_PATH}}  — ex.: docs/prds/0007-archive-projects.md
+#   {{PRD_URL}}   — URL completo no repo de produto
+#   {{RISK}}      — low | medium | high | critical
+#   {{SPRINT}}    — ex.: 2026-W22
+trailer: |
+  ---
+  🔗 **Origem (produto)**: [{{PRD_PATH}}]({{PRD_URL}}) · sprint **{{SPRINT}}** · risco **{{RISK}}**
+
+# Mapping da nossa escala de risco para as labels do engineering (espelha o
+# policy.yml de lá). Só muda se o engineering usar nomes diferentes.
+risk_mapping:
+  low: "risk:low"
+  medium: "risk:medium"
+  high: "risk:high"
+  critical: "risk:critical"

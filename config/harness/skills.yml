@@ -21,6 +21,7 @@ internal:
   - roadmap-thinking        # now / next / later, trade-offs
   - discovery-methods       # entrevistas, JTBD, hipóteses testáveis
   - product-review-rubric   # rubrica de review (coerência, escopo, métricas)
+  - cross-repo-handoff      # como escrever issues no repo de engenharia (Fase 2)
 
 # Skills externas aprovadas (vazio até serem revistas + fixadas).
 external: []

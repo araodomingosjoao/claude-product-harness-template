@@ -17,8 +17,9 @@ porquê*. Junta:
 - **Skills** sénior reutilizáveis (writing-prds, user-story-writing,
   sprint-planning, roadmap-thinking, discovery-methods, product-review-rubric).
 - **Governance** (CLAUDE.md, branch protection, CODEOWNERS, AI review em PT).
-- **Hand-off cross-repo** (Fase 2) — o `ticket-writer` cria issues no repo de
-  engenharia para o `@claude` de lá implementar. Fecha o loop produto → engenharia.
+- **Hand-off cross-repo** — o `ticket-writer` cria issues no repo de engenharia
+  (configurado em `config/harness/engineering.yml`) para o `@claude` de lá
+  implementar. Fecha o loop produto → engenharia.
 
 ## Começar
 
@@ -88,7 +89,7 @@ com o PRD no `docs/prds/`. A review do AI já vem em **português**.
 4. Review de coerência              ─►  product-reviewer
 5. Roadmap actualizado              ─►  roadmap-keeper
 6. Sprint kickoff                   ─►  sprint-planner
-7. Stories → issues (eng repo)      ─►  ticket-writer  (Fase 2)
+7. Stories → issues (eng repo)      ─►  ticket-writer  (engineering.yml)
 ```
 
 ## Estrutura
@@ -111,7 +112,7 @@ com o PRD no `docs/prds/`. A review do AI já vem em **português**.
 ├── config/harness/
 │   ├── policy.yml             # Budgets, kill switch, risco por path
 │   ├── skills.yml             # Allow-list de skills
-│   └── engineering.yml        # (Fase 2) Repo de engenharia para handoff
+│   └── engineering.yml        # Repo de engenharia para handoff cross-repo
 │
 ├── docs/
 │   ├── scope.md               # Visão estável (a north star)

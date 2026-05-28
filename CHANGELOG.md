@@ -5,6 +5,24 @@ Versões deste template (não confundir com o changelog do projecto que o usa).
 O formato segue [Keep a Changelog](https://keepachangelog.com/) e
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-05-28
+
+### Adicionado
+- **Cross-repo handoff (Fase 2)** — o ciclo produto→engenharia ligado:
+  - `config/harness/engineering.yml` — aponta o `ticket-writer` ao repo de
+    engenharia + defaults (labels, `mention_claude`: auto/always/never), trailer
+    com link ao PRD, `risk_mapping`.
+  - Skill `cross-repo-handoff` — formato sénior de issues (título em inglês,
+    body em PT, Given/When/Then, labels, regra do `@claude` por nível de risco).
+  - Agente `ticket-writer` reescrito: lê `engineering.yml`, gera título+body+
+    labels+trailer, corre `gh issue create --repo <eng>`, devolve URLs dos
+    issues. Fallback `--draft` (markdown local) se `engineering.yml` não
+    estiver configurado.
+  - `CLAUDE.md` actualizado (secção de tickets reflete a Fase 2 activa).
+
+### Mudou
+- `config/harness/skills.yml` — `cross-repo-handoff` adicionada à allow-list interna.
+
 ## [0.1.0] - 2026-05-28
 
 ### Adicionado
@@ -22,7 +40,5 @@ O formato segue [Keep a Changelog](https://keepachangelog.com/) e
   commits em inglês).
 
 ### Fases pendentes (próximas releases)
-- **Fase 2**: cross-repo wiring — `ticket-writer` cria issues no repo de engenharia
-  via `gh issue create --repo`; `config/harness/engineering.yml`.
 - **Fase 3**: design conversacional — agente `design-explorer` + skills
   `wireframing-in-markdown` e flows em Mermaid.
