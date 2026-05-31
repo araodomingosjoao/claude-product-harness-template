@@ -37,3 +37,16 @@ risk_mapping:
   medium: "risk:medium"
   high: "risk:high"
   critical: "risk:critical"
+
+# Canal reverso (loop produto↔engenharia). Quando o @claude do engineering tem
+# dúvida sobre uma REGRA DE NEGÓCIO (não sobre o "como"), pergunta de volta em vez
+# de adivinhar. Ver a skill cross-repo-handoff → "Canal reverso".
+needs_product:
+  # Label que marca uma pergunta de regra de negócio para o lado de produto.
+  label: "needs-product"
+  # Onde a pergunta aterra:
+  #   engineering — issue/comentário no repo de engenharia, com a label (default)
+  #   product     — abre issue no repo de produto (gh issue create --repo <product>)
+  route: engineering
+  # O produto responde E amenda a spec (PRD/PDD) — a resposta não morre no
+  # comentário. A volta (PR → conformidade vs PRD) é do spec-conformance-reviewer.

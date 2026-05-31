@@ -21,6 +21,7 @@ internal:
   - roadmap-thinking        # now / next / later, trade-offs
   - discovery-methods       # entrevistas, JTBD, hipóteses testáveis
   - product-review-rubric   # rubrica de review (coerência, escopo, métricas)
+  - spec-conformance-rubric # PR de engenharia vs regras do PRD (loop produto↔eng.)
   - cross-repo-handoff      # como escrever issues no repo de engenharia (Fase 2)
   # design (Fase 3)
   - wireframing-in-markdown # wireframes textuais cobrindo os 4 estados
