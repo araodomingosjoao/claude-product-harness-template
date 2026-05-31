@@ -5,6 +5,23 @@ Versões deste template (não confundir com o changelog do projecto que o usa).
 O formato segue [Keep a Changelog](https://keepachangelog.com/) e
 [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-05-31
+
+### Adicionado
+- **Loop de conformidade produto↔engenharia (bidireccional).** O handoff deixa de
+  ser só de ida:
+  - **`spec-conformance-reviewer`** (agente, read-only, cross-repo) + skill
+    **`spec-conformance-rubric`** — revê uma PR de engenharia contra as **regras de
+    negócio do PRD** (critérios, decisões, escopo), não a qualidade do código.
+    Veredicto **CONFORME / PEDIR ALTERAÇÕES / NEEDS-PRODUCT**.
+  - **Canal reverso `needs-product`** na skill `cross-repo-handoff` + bloco
+    `needs_product` em `engineering.yml`: quando a engenharia tem dúvida sobre uma
+    **regra de negócio** (não sobre o *como*), pergunta em vez de adivinhar, e o
+    produto responde **amendando a spec** (PRD/PDD), não só o comentário.
+  - `CLAUDE.md` (pipeline) e `skills.yml` actualizados.
+  - **Limite v1:** o reviewer é invocado **manualmente** (sem automação por CI).
+  - _Prototipado e validado num projecto real antes de entrar no template._
+
 ## [0.3.1] - 2026-05-28
 
 ### Adicionado

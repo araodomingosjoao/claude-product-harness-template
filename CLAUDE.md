@@ -74,6 +74,11 @@ spec-writer → discovery-researcher → prd-author → product-reviewer → roa
                               sprint-planner → ticket-writer (gh issue → engineering)
                                                        │
                             design-explorer (paralelo, quando há UI — texto ou Claude Design)
+
+            engenharia (@claude) implementa → PR ──► spec-conformance-reviewer
+                                                       │ needs-product (spec ambígua)
+                                                       ▼
+                                       clarifica PRD/PDD → volta à engenharia
 ```
 
 - **`spec-writer`** — pedido vago? Clarifica primeiro. Não inventes.
@@ -84,8 +89,17 @@ spec-writer → discovery-researcher → prd-author → product-reviewer → roa
 - **`sprint-planner`** — parte itens do roadmap em sprints com objetivo + capacidade.
 - **`ticket-writer`** — converte stories em **issues no repo de engenharia** (`gh issue create --repo`).
 - **`design-explorer`** — paralelo: enriquece o PRD com wireframes textuais (`wireframing-in-markdown` + `mermaid-flows`) para UI simples, ou produz um **brief para o Claude Design** quando a UI exige prototipagem rica. O bundle URL resultante vai parar à story e o `ticket-writer` transporta-o para o issue.
+- **`spec-conformance-reviewer`** — fecha o loop: revê a PR de engenharia contra as **regras de negócio do PRD** (critérios, decisões, escopo). Veredicto **CONFORME / PEDIR ALTERAÇÕES / NEEDS-PRODUCT** (read-only, cross-repo). Não revê qualidade de código — isso é o code-review do engineering.
 
 Tasks pequenas saltam fases (ex.: nota de descoberta direta, sem PRD).
+
+**O handoff é bidireccional.** Depois de o `@claude` do engineering abrir a PR, o
+`spec-conformance-reviewer` confronta-a com as regras do PRD. E quando a engenharia
+tem dúvida sobre uma **regra de negócio** (não sobre o *como*), abre uma pergunta
+`needs-product` em vez de adivinhar — o produto responde **e clarifica a spec**
+(PRD/PDD), não só o comentário. Ver a skill `cross-repo-handoff` → "Canal reverso" e
+`config/harness/engineering.yml → needs_product`. **Limite v1:** o
+`spec-conformance-reviewer` é invocado **manualmente** (sem automação por CI ainda).
 
 ## Convenções de PRD
 

@@ -71,6 +71,35 @@ Decide pelo **risco** (configurável em `engineering.yml → mention_claude`):
 - Se `always` → menciona sempre, mesmo critical (assume que confias no review
   humano da engineering).
 
+## Canal reverso — o handoff é bidireccional (`needs-product`)
+
+O contrato não é só produto → engenharia. Quando o `@claude` do engineering bate
+numa **regra de negócio ambígua** a meio da implementação, vale a mesma regra que o
+harness de produto tem para si próprio: **não adivinhes — pergunta**. Adivinhar uma
+regra de negócio é o pior tipo de palpite (dinheiro, autorização, estados) e é o
+que gera divergência silenciosa.
+
+**Como a engenharia pergunta de volta:**
+- Abre uma questão com a label **`needs-product`** (issue no engineering, ou
+  comentário no PR), a referenciar o ticket **e a secção concreta do PRD** que é
+  ambígua. **Avança com os critérios que não dependem da regra ambígua** e deixa em
+  aberto só o que depende dela; se a ambiguidade for de uma regra **central** (sem
+  ela o ticket não fecha), di-lo e **pausa o ticket todo** — não entregues
+  meio-feito a fingir que está completo.
+- É uma pergunta de **o quê / porquê** (produto). Se for **como** (schema, padrão,
+  framework, performance), é da engenharia — **não** usa este canal.
+
+**Como o produto responde (o passo que fecha o loop):**
+- O lado de produto responde **e amenda a spec**. A resposta **não morre no
+  comentário**: move o ponto de `Decisões em aberto` → `Decisões já tomadas` no PRD
+  (ou cria/edita um PDD se a decisão for grande). Se o agente teve dúvida, a spec
+  estava ambígua ali — corrige-se na **fonte**, para o próximo implementador (e o
+  `spec-conformance-reviewer`) já não tropeçar.
+- O link da resposta volta ao ticket; a engenharia retoma já conforme.
+
+> Label e roteamento configuram-se em `engineering.yml → needs_product`. A volta
+> (PR de engenharia → conformidade vs PRD) é do agente `spec-conformance-reviewer`.
+
 ## Princípios
 
 - **Sem detalhes técnicos enfiados.** O *como* é da engenharia. Tu escreves o *o quê*.
